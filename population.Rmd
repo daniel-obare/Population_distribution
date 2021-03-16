@@ -1,0 +1,64 @@
+---
+title: "Population Distribution by Sex in Urban Centers and Status of Center"
+author: "Daniel Obare"
+date: "2/21/2020"
+output: html_document:
+  keep_md: yes
+  theme: united
+  toc: yes
+  toc_depth: 4
+  toc_float:
+    collapsed: yes
+    smooth_scroll: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+
+require(dplyr)
+require(tidyr)
+require(magrittr)
+require(stringr)
+```
+
+
+```{r}
+population <- Population_Distribution_by_Sex_in_Urban_Centres_and_Status_of_Centre_2009 %>% 
+  select(-OBJECTID) %>% 
+  mutate(`Peri-Urban_Male_Population` =
+           replace_na(Population_Distribution_by_Sex_in_Urban_Centres_and_Status_of_Centre_2009$`Peri-Urban_Male_Population`, 
+                      mean(Population_Distribution_by_Sex_in_Urban_Centres_and_Status_of_Centre_2009$`Peri-Urban_Male_Population`, 
+                           na.rm = TRUE))) %>% 
+  mutate(`Peri-Urban_Female_Population` =
+           replace_na(Population_Distribution_by_Sex_in_Urban_Centres_and_Status_of_Centre_2009$`Peri-Urban_Female_Population`,
+                      mean(Population_Distribution_by_Sex_in_Urban_Centres_and_Status_of_Centre_2009$`Peri-Urban_Female_Population`, 
+                           na.rm = TRUE))) %>% 
+  mutate(`Total_Peri-Urban_Population` =
+           replace_na(Population_Distribution_by_Sex_in_Urban_Centres_and_Status_of_Centre_2009$`Total_Peri-Urban_Population`,
+                      mean(Population_Distribution_by_Sex_in_Urban_Centres_and_Status_of_Centre_2009$`Total_Peri-Urban_Population`, 
+                           na.rm = TRUE))) %>% 
+  mutate(Rural_Male_Population = 
+           replace_na(Population_Distribution_by_Sex_in_Urban_Centres_and_Status_of_Centre_2009$Rural_Male_Population,
+                      mean(Population_Distribution_by_Sex_in_Urban_Centres_and_Status_of_Centre_2009$Rural_Male_Population, 
+                           na.rm = TRUE))) %>% 
+  mutate(Rural_Female_Population = 
+           replace_na(Population_Distribution_by_Sex_in_Urban_Centres_and_Status_of_Centre_2009$`Peri-Urban_Female_Population`,
+                      mean(Population_Distribution_by_Sex_in_Urban_Centres_and_Status_of_Centre_2009$Rural_Female_Population, 
+                           na.rm = TRUE))) %>% 
+  mutate(Total_Rural_Population = 
+           replace_na(Population_Distribution_by_Sex_in_Urban_Centres_and_Status_of_Centre_2009$Total_Rural_Population,
+                      mean(Population_Distribution_by_Sex_in_Urban_Centres_and_Status_of_Centre_2009$Total_Rural_Population, 
+                           na.rm = TRUE))) %>% 
+  arrange(Total_Population) %>% 
+  janitor::clean_names()
+```
+
+
+
+```{r}
+pop_levels <- c('0-9999', '10,000-19,999', '20,000-29,999','30,000-39,999', '40,000-49,999', '50,000-59,999',
+                '60,000-69,999', '70,000-79,999', '80,000-89,999', '90,000+')
+```
+
